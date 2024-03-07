@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>会員ステータス変更(無料から有料に変更)</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container nagoyameshi-container pb-5">
+				<div class="row justify-content-center">
+					<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+						<ol class="breadcrumb mb-0">
+							<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+							<li class="breadcrumb-item active" aria-current="page">会員ステータス変更(無料から有料に変更)</li>
+						</ol>
+					</nav>
+
+					<h1 class="text-center mb-3">有料会員に変更</h1>
+
+					<form method="post" th:action="@{/user/editpaid}">
+
+						<div class="card mb-3 col-md-6 col-lg-4">
+							<div class="card-header text-center">
+								有料会員が出来ること
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">・店舗を予約可能</li>
+								<li class="list-group-item">・店舗をお気に入りに追加出来る機能</li>
+								<li class="list-group-item">・レビューを全件閲覧・投稿可能</li>
+								<li class="list-group-item">・月額300円で利用可能</li>
+							</ul>
+						</div>
+
+						<div class="form-group d-flex justify-content-center">
+							<button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">変更する</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+
+</html>

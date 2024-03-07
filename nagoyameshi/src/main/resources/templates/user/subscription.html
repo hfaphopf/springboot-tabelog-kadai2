@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>サブスクリプション契約</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container nagoyameshi-container pb-5">
+				<div class="row justify-content-center">
+					<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+						<ol class="breadcrumb mb-0">
+							<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+							<li class="breadcrumb-item active" aria-current="page">サブスクリプション契約</li>
+						</ol>
+					</nav>
+
+					<h1 class="text-center mb-3">サブスクリプション契約</h1>
+
+					<form method="post" th:action="@{/user/editpaid}">
+
+						<div class="card mb-3 col-md-6 col-lg-4">
+							<div class="card-header text-center">
+								サブスクリプション加入のメリット
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">・店舗を予約可能</li>
+								<li class="list-group-item">・店舗をお気に入りに追加出来る機能</li>
+								<li class="list-group-item">・レビューを全件閲覧・投稿可能</li>
+								<li class="list-group-item">・月額300円で利用可能</li>
+							</ul>
+						</div>
+
+						<p>サブスクリプション加入は下記リンクより加入できます</p>
+						<p>テストカード番号:4242 4242 4242 4242</p>
+
+						<a href="https://buy.stripe.com/test_5kA5l1ezX9eX8P68ww">サブスクリプション加入リンク</a>
+
+					</form>
+				</div>
+
+
+			</div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+
+</html>

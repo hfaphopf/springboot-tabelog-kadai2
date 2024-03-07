@@ -1,0 +1,74 @@
+ <!DOCTYPE html>																
+ <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">    																
+     <head>																
+         <div th:replace="~{fragment :: meta}"></div>   																
+              																
+         <div th:replace="~{fragment :: styles}"></div>																
+           																
+         <title>レビュー編集</title>   																
+     </head>																
+     <body>																
+         <div class="nagoyameshi-wrapper">																
+             <!-- ヘッダー -->																
+             <div th:replace="~{fragment :: header}"></div>																
+             																
+             <main>																
+                 <div class="container pt-4 pb-5 nagoyameshi-container">																
+                     <div class="row justify-content-center">																
+                         <div class="col-xl-5 col-lg-6 col-md-8">																
+                             <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">																
+                                 <ol class="breadcrumb mb-0">                        																
+                                     <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>																
+                                     <li class="breadcrumb-item"><a th:href="@{/restaurants}">店舗一覧</a></li>																
+                                     <li class="breadcrumb-item"><a th:href="@{/restaurants/__${restaurant.getId()}__}">店舗詳細</a></li>																
+                                     <li class="breadcrumb-item active" aria-current="page">レビュー編集</li>																
+                                 </ol>																
+                             </nav>																
+                             																
+                             <h1 class="mb-4 text-center" th:text="${restaurant.getName() + 'のレビュー編集'}"></h1> 																
+                                       																
+                             <form method="post" th:action="@{/restaurants/__${restaurant.getId()}__/reviews/__${review.getId()}__/update}" th:object="${reviewEditForm}"> 																
+                                 <input type="hidden" th:field="*{id}">																
+                                                                                                                            																
+                                 <div class="form-group row mb-3">																
+                                     <div class="col-md-3">																
+                                         <label for="name" class="col-form-label text-md-left fw-bold">評価</label>																
+                                     </div>																
+                                     <div class="col-md-9">                                    																
+                                         <div th:if="${#fields.hasErrors('score')}" class="text-danger small mb-2" th:errors="*{score}"></div>                                    																
+                                         <select class="form-select nagoyameshi-star" th:field="*{score}">																
+                                             <option class="nagoyameshi-star" value="5" selected>&#9733;&#9733;&#9733;&#9733;&#9733;</option>																
+                                             <option class="nagoyameshi-star" value="4">&#9733;&#9733;&#9733;&#9733;&#9734;</option>																
+                                             <option class="nagoyameshi-star" value="3">&#9733;&#9733;&#9733;&#9734;&#9734;</option>																
+                                             <option class="nagoyameshi-star" value="2">&#9733;&#9733;&#9734;&#9734;&#9734;</option>																
+                                             <option class="nagoyameshi-star" value="1">&#9733;&#9734;&#9734;&#9734;&#9734;</option>                                                                                                                                                                            																
+                                         </select>																
+                                     </div>																
+                                 </div>                               																
+                                 																
+                                 <div class="form-group row mb-3">																
+                                     <div class="col-md-3">																
+                                         <label for="description" class="col-form-label text-md-left fw-bold">コメント</label>																
+                                     </div>																
+                                     <div class="col-md-9">                            																
+                                         <div th:if="${#fields.hasErrors('content')}" class="text-danger small mb-2" th:errors="*{content}"></div>                                        																
+                                         <textarea class="form-control" th:field="*{content}" cols="30" rows="5"></textarea>																
+                                     </div>																
+                                 </div>                                                                                                                        																
+                                 																
+                                 <div class="form-group d-flex justify-content-center my-4">																
+                                     <button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">更新</button>																
+                                 </div>																
+                             </form>                                                          																
+                         </div>																
+                     </div>																
+                 </div> 																
+             </main>																
+             																
+             <!-- フッター -->																
+             <div th:replace="~{fragment :: footer}"></div>																
+         </div>    																
+         																
+         <div th:replace="~{fragment :: scripts}"></div>  																
+   </body>																
+ </html>																

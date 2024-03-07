@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>会社情報</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pb-5 nagoyameshi-container">
+				<div class="row justify-content-center">
+					<div class="col-xl-5 col-lg-6 col-md-8">
+						<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+								<li class="breadcrumb-item active" aria-current="page">会社情報</li>
+							</ol>
+						</nav>
+
+						<h1 class="mb-3 text-center">会社情報</h1>
+
+						<div th:if="${successMessage}" class="alert alert-info">
+							<span th:text="${successMessage}"></span>
+						</div>
+
+						<div class="container mb-4">
+							<div class="row pb-2 mb-2 border-bottom">
+								<div class="col-4">
+									<span class="fw-bold">会社名</span>
+								</div>
+
+								<div class="col">
+									<span>株式会社NAGOYAMESHI</span>
+								</div>
+							</div>
+
+							<div class="row pb-2 mb-2 border-bottom">
+								<div class="col-4">
+									<span class="fw-bold">所在地</span>
+								</div>
+
+								<div class="col">
+									<span>〒159-2587 愛知県名古屋市東区NAGOYAMESHI町</span>
+								</div>
+							</div>
+
+							<div class="row pb-2 mb-2 border-bottom">
+								<div class="col-4">
+									<span class="fw-bold">代表者名</span>
+								</div>
+
+								<div class="col">
+									<span>名古屋 太郎</span>
+								</div>
+							</div>
+
+							<div class="row pb-2 mb-2 border-bottom">
+								<div class="col-4">
+									<span class="fw-bold">設立日</span>
+								</div>
+
+
+
+								<div class="col">
+									<span>2020年4月1日</span>
+								</div>
+							</div>
+
+							<div class="row pb-2 mb-2 border-bottom">
+								<div class="col-4">
+									<span class="fw-bold">資本金</span>
+								</div>
+
+								<div class="col">
+									<span>30,000千円</span>
+								</div>
+							</div>
+
+							<div class="row pb-2 mb-2 border-bottom">
+								<div class="col-4">
+									<span class="fw-bold">事業内容</span>
+								</div>
+
+								<div class="col">
+									<span>飲食店等の予約・情報共有事業</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>
