@@ -26,8 +26,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 	//カテゴリで検索する（料金が安い順）
 	public Page<Restaurant> findByCategoryLikeOrderByPriceAsc(String category, Pageable pageable);
 
+	//予算で検索する（新着順）
 	public Page<Restaurant> findByPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
 
+	//予算で検索する（料金が安い順）
 	public Page<Restaurant> findByPriceLessThanEqualOrderByPriceAsc(Integer price, Pageable pageable);
 
 	//すべてのデータを取得する（新着順）
