@@ -81,6 +81,7 @@ public class UserController {
 		model.addAttribute("userEditPaidForm", up);
 
 		return "user/changepaid";
+
 	}
 
 	//有料→無料変更画面に遷移
@@ -111,7 +112,7 @@ public class UserController {
 		//現在設定されている会員レベル(Role)の逆を設定：1→2　もしくは、2→1。
 		userService.updatePaid(userDetailsImpl.getUser().getId());
 
-		return "redirect:/admin/users/index";
+		return "redirect:/user";
 	}
 
 	@GetMapping("/company")
