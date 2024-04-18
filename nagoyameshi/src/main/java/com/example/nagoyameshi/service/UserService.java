@@ -88,14 +88,13 @@ public class UserService {
 		//現在設定されている会員レベルの逆を設定：無料会員→有料会員　もしくは、その逆。
 		Role r = changepaiduser.getRole();
 		String role = r.getName();
-		Role newRole = new Role();
+	
+		int newRole = 1;
 		if (r.getId() == 1) {
-			newRole.setId(3);
-		} else {
-			newRole.setId(1);
+			newRole = 3;
 		}
-		changepaiduser.setRole(newRole);
+		changepaiduser.setRole(roleRepository.findById(newRole));
 
 		userRepository.save(changepaiduser);
-	}
+		}
 }
