@@ -113,7 +113,7 @@ public class AuthController {
 			return "auth/reset";
 		}
 
-		User user = userRepository.findByEmail(resetForm.getEmail());
+		User user = userRepository.findUserByEmail(resetForm.getEmail());
 		String requestUrl = new String(httpServletRequest.getRequestURL());
 		resetEventPublisher.publishResetEvent(user, requestUrl);
 		redirectAttributes.addFlashAttribute("successMessage",
