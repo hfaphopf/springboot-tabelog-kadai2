@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
+import com.example.nagoyameshi.form.ResetPasswordForm;
 import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.RoleRepository;
@@ -97,4 +98,13 @@ public class UserService {
 
 		userRepository.save(changepaiduser);
 		}
+
+	@Transactional
+	public void updatePassword(ResetPasswordForm resetPasswordForm) {
+		User user = userRepository.getReferenceById(resetPasswordForm.getId());
+
+		user.setPassword(passwordEncoder.encode(resetPasswordForm.getPassword()));
+
+		userRepository.save(user);
+	}
 }
