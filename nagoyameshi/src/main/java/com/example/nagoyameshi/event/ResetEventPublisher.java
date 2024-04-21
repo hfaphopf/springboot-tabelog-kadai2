@@ -1,12 +1,19 @@
-package com.example.nagoyameshi.form;
+package com.example.nagoyameshi.event;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
-@Data
-public class ResetForm {
-	@NotBlank(message = "メールアドレスを入力してください。")
-	@Email(message = "メールアドレスは正しい形式で入力してください。")
-	private String email;
+import com.example.nagoyameshi.entity.User;
+
+@Component
+public class ResetEventPublisher {
+	private final ApplicationEventPublisher applicationEventPublisher;
+
+	public ResetEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher = applicationEventPublisher;
+	}
+
+	public void publishResetEvent(User user, String requestUrl) {
+		applicationEventPublisher.publishEvent(new ResetEvent(this, user, requestUrl));
+	}
 }
