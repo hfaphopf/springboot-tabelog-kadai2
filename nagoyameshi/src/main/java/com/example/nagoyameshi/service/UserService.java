@@ -90,7 +90,7 @@ public class UserService {
 		//現在設定されている会員レベルの逆を設定：無料会員→有料会員　もしくは、その逆。
 		Role r = changepaiduser.getRole();
 		String role = r.getName();
-	
+
 		int newRole = 1;
 		if (r.getId() == 1) {
 			newRole = 3;
@@ -98,7 +98,7 @@ public class UserService {
 		changepaiduser.setRole(roleRepository.findById(newRole));
 
 		userRepository.save(changepaiduser);
-		}
+	}
 
 	@Transactional
 	public void updatePassword(ResetPasswordForm resetPasswordForm) {
@@ -108,10 +108,10 @@ public class UserService {
 
 		userRepository.save(user);
 	}
-	
+
 	@Transactional
 	public void userAuth() {
-User user = userRepository.getReferenceById(ResetForm.getId());
-}
-	
+		User user = userRepository.getReferenceById(ResetForm.getId());
+	}
+
 }
