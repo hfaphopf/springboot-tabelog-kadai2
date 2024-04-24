@@ -159,7 +159,28 @@
 								<div class="col-md-8">
 									<div th:if="${#fields.hasErrors('category')}" class="text-danger small mb-2"
 										th:errors="*{category}"></div>
-									<input type="text" class="form-control" th:field="*{category}">
+									<select name="example" size="19" multiple th:field="*{category}">
+										<option value="和食">和食</option>
+										<option value="ラーメン">ラーメン</option>
+										<option value="揚げ物">揚げ物</option>
+										<option value="うどん">うどん</option>
+										<option value="鍋料理">鍋料理</option>
+										<option value="フランス料理">フランス料理</option>
+										<option value="カレー">カレー</option>
+										<option value="寿司">寿司</option>
+										<option value="焼肉">焼肉</option>
+										<option value="ハンバーグ">ハンバーグ</option>
+										<option value="中華料理">中華料理</option>
+										<option value="喫茶店">喫茶店</option>
+										<option value="スイーツ">スイーツ</option>
+										<option value="ステーキ">ステーキ</option>
+										<option value="焼き鳥">焼き鳥</option>
+										<option value="タイ料理">タイ料理</option>
+										<option value="たこ焼き">たこ焼き</option>
+										<option value="お好み焼き">お好み焼き</option>
+										<option value="パン">パン</option>
+									</select>
+
 								</div>
 							</div>
 
