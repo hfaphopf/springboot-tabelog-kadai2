@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
+import com.example.nagoyameshi.form.ResetForm;
 import com.example.nagoyameshi.form.ResetPasswordForm;
 import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.form.UserEditForm;
@@ -107,4 +108,10 @@ public class UserService {
 
 		userRepository.save(user);
 	}
+	
+	@Transactional
+	public void userAuth() {
+User user = userRepository.getReferenceById(ResetForm.getId());
+}
+	
 }
