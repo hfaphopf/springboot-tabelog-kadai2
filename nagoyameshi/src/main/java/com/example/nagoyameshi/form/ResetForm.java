@@ -10,7 +10,4 @@ public class ResetForm {
 	@Email(message = "メールアドレスは正しい形式で入力してください。")
 	private String email;
 
-	public static Integer getId() {
-		return null;
-	}
 }
