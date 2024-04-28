@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<div th:replace="~{fragment :: meta}"></div>
+		
+		<div th:replace="~{fragment :: styles}"></div>
+		
+		<title>カテゴリ一覧</title>
+	</head>
+	<body>
+		<div class="nagoyameshi-wrapper">
+			<div th:replace="~{fragment :: header}"></div>
+			
+			<main>
+				<div class="container pt-4 pb-5 nagoyameshi-container">
+					<div class="row justify-content-center">
+						<div class="col-xxl-9 col-xl-10 col-lg-11">
+							
+							<h1 class="mb-4 text-center">カテゴリ一覧</h1>
+							
+							<div class="d-flex justify-content-end">
+								<a th:href="@{/admin/categories/register}" class="btn text-white shadow-sm mb-3 nagoyameshi-btn">登録</a>
+							</div>
+							
+							<div th:if="${successMessage}" class="alert alert-info">
+								<span th:text="${successMessage}"></span>
+							</div>
+							
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">ID</th>
+										<th scope="col">カテゴリ名</th>
+										<th scope="col"></th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="category : ${categoryPage}">
+										<td th:text="${category.getId()}"></td>
+										<td th:text="${category.getName()}"></td>
+										<td><a th:href="@{/admin/categories/__${category.getId()}__/edit}">編集</a></td>
+										<td><a href="#" class="nagoyameshi-link-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteCategoryModal' + category.getId()}">削除</a></td>
+										
+										<!-- 削除用モーダル -->
+										<div class="modal fade" th:id="${'deleteCategoryModal' + category.getId()}" tabindex="-1" th:aria-labelledby="${'deleteCategoryModalLabel' + category.getId()}">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" th:id="${'deleteCategoryModalLabel' + category.getId()}" th:text="${category.getName() + 'を削除してもよろしいですか？'}"></h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+													</div>
+													<div class="modal-footer">
+														<form method="post" th:action="@{/admin/categories/__${category.getId()}__/delete}">
+															<button type="submit" class="btn nagoyameshi-btn-danger text-white shadow-sm">削除</button>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</tr>
+								</tbody>
+							</table>
+							
+							<!-- ページネーション -->
+							<div th:if = "${categoryPage.getTotalPages() > 1}" class="d-flex justify-content-center">
+								<nav aria-label="カテゴリ一覧ページ">
+									<ul class="pagination">
+										<li class="page-item">
+											<span th:if="${categoryPage.isFirst()}" class="page-link disabled">前</span>
+											<a th:unless="${categoryPage.isFirst()}" th:href="@{/admin/categories(page = ${categoryPage.getNumber() - 1})}" class="page-link nagoyameshi-page-link">前</a>
+										</li>
+										<li th:each="i : ${#numbers.sequence(0, categoryPage.getTotalPages() - 1)}" class="page-item">
+											<span th:if="${i == categoryPage.getNumber()}" class="page-link active nagoyameshi-active" th:text="${i + 1}"></span>
+											<a th:unless="${i == categoryPage.getNumber()}" th:href="@{/admin/categories(page = ${i})}" class="page-link nagoyameshi-page-link" th:text="${i + 1}"></a>
+										</li>
+										<li class="page-item">
+											<span th:if="${categoryPage.isLast()}" class="page-link disabled">次</span>
+											<a th:unless="${categoryPage.isLast()}" th:href="@{/admin/categories(page = ${categoryPage.getNumber() + 1})}" class="page-link nagoyameshi-page-link">次</a>
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+			
+			<div th:replace="~{fragment :: footer}"></div>
+		</div>
+		
+		<div th:replace="~{fragment :: scripts}"></div>
+	</body>
+</html>
