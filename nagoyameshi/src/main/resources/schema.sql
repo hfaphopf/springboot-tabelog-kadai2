@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS reviews (
      FOREIGN KEY (user_id) REFERENCES users (id)
  );
  
- CREATE TABLE IF NOT EXISTS favorites (
+CREATE TABLE IF NOT EXISTS favorites (
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      restaurant_id INT NOT NULL,
      user_id INT NOT NULL,    
@@ -79,4 +79,11 @@ CREATE TABLE IF NOT EXISTS reviews (
      UNIQUE (restaurant_id, user_id),
      FOREIGN KEY (restaurant_id) REFERENCES restaurants (id),
      FOREIGN KEY (user_id) REFERENCES users (id)  
+ );
+ 
+CREATE TABLE IF NOT EXISTS categories (
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR (50) NOT NULL,    
+     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
  );
