@@ -114,3 +114,25 @@ INSERT IGNORE INTO reviews (id, restaurant_id, user_id, score, content) VALUES (
  INSERT IGNORE INTO favorites (id, restaurant_id, user_id) VALUES (10, 10, 7);
  INSERT IGNORE INTO favorites (id, restaurant_id, user_id) VALUES (11, 11, 1);
  INSERT IGNORE INTO favorites (id, restaurant_id, user_id) VALUES (12, 12, 1);
+
+ --categoriesテーブル
+ INSERT IGNORE INTO categories (id, name) VALUES (1, '和食');
+ INSERT IGNORE INTO categories (id, name) VALUES (2, 'ラーメン');
+ INSERT IGNORE INTO categories (id, name) VALUES (3, '揚げ物');
+ INSERT IGNORE INTO categories (id, name) VALUES (4, 'うどん');
+ INSERT IGNORE INTO categories (id, name) VALUES (5, '鍋料理');
+ INSERT IGNORE INTO categories (id, name) VALUES (6, 'フランス料理');
+ INSERT IGNORE INTO categories (id, name) VALUES (7, 'カレー');
+ INSERT IGNORE INTO categories (id, name) VALUES (8, '寿司');
+ INSERT IGNORE INTO categories (id, name) VALUES (9, '焼肉');
+ INSERT IGNORE INTO categories (id, name) VALUES (10, 'ハンバーグ');
+ INSERT IGNORE INTO categories (id, name) VALUES (11, '中華料理');
+ INSERT IGNORE INTO categories (id, name) VALUES (12, '喫茶店');
+ INSERT IGNORE INTO categories (id, name) VALUES (13, 'スイーツ');
+ INSERT IGNORE INTO categories (id, name) VALUES (14, 'ステーキ');
+ INSERT IGNORE INTO categories (id, name) VALUES (15, '焼き鳥');
+ INSERT IGNORE INTO categories (id, name) VALUES (16, 'タイ料理');
+ INSERT IGNORE INTO categories (id, name) VALUES (17, 'たこ焼き');
+ INSERT IGNORE INTO categories (id, name) VALUES (18, 'お好み焼き');
+ INSERT IGNORE INTO categories (id, name) VALUES (19, 'パン');
+ 
