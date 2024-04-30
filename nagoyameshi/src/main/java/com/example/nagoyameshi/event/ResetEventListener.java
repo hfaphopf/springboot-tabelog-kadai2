@@ -8,14 +8,19 @@ import org.springframework.stereotype.Component;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.repository.VerificationTokenRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class ResetEventListener {
 	private final VerificationTokenRepository verificationTokenRepository;
 	private final JavaMailSender javaMailSender;
+	private String confirmationUrl;
 
 	public ResetEventListener(VerificationTokenRepository verificationTokenRepository, JavaMailSender mailSender) {
 		this.verificationTokenRepository = verificationTokenRepository;
 		this.javaMailSender = mailSender;
+		log.info("confirmationUrl:" + confirmationUrl);
 	}
 
 	@EventListener
@@ -34,4 +39,5 @@ public class ResetEventListener {
 		mailMessage.setText(message + "\n" + confirmationUrl);
 		javaMailSender.send(mailMessage);
 	}
+
 }
