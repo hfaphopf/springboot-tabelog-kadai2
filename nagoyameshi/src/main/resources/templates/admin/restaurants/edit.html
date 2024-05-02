@@ -33,16 +33,13 @@
 							th:object="${restaurantEditForm}" enctype="multipart/form-data">
 							<input type="hidden" th:field="*{id}">
 
-							//各項目の入力ボックスを表示
 							<div class="form-group row mb-3">
 								<div class="col-md-4">
 									<label for="name" class="col-form-label text-md-left fw-bold">店舗名</label>
 								</div>
 								<div class="col-md-8">
-									//エラーを個別に表示する
 									<div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2"
 										th:errors="*{name}"></div>
-									//更新したいデータを送信する
 									<input type="text" class="form-control" th:field="*{name}" autofocus>
 								</div>
 							</div>
