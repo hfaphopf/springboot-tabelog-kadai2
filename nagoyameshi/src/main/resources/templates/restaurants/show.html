@@ -30,7 +30,48 @@
 						</nav>
 
 						<!-- お気に入りセクション -->
-						<div sec:authorize="isAuthenticated()">
+						<!-- 有料会員であれば表示する -->
+						<div sec:authorize="hasRole('ROLE_PAY')">
+							<div th:if="${isFavorite}">
+								<a href="#"
+									onclick="event.preventDefault(); document.getElementById('favorite-form').submit();">&#9829;
+									お気に入り解除</a>
+								<form method="post"
+									th:action="@{/restaurants/__${restaurant.getId()}__/favorites/__${favorite.getId()}__/delete}"
+									id="favorite-form" class="d-none"></form>
+							</div>
+							<div th:unless="${isFavorite}">
+								<a href="#"
+									onclick="event.preventDefault(); document.getElementById('favorite-form').submit();">&#9825;
+									お気に入り追加</a>
+								<form method="post"
+									th:action="@{/restaurants/__${restaurant.getId()}__/favorites/create}"
+									id="favorite-form" class="d-none"></form>
+							</div>
+						</div>
+						
+						<!-- 管理者であれば表示する -->
+						<div sec:authorize="hasRole('ROLE_ADMIN')">
+							<div th:if="${isFavorite}">
+								<a href="#"
+									onclick="event.preventDefault(); document.getElementById('favorite-form').submit();">&#9829;
+									お気に入り解除</a>
+								<form method="post"
+									th:action="@{/restaurants/__${restaurant.getId()}__/favorites/__${favorite.getId()}__/delete}"
+									id="favorite-form" class="d-none"></form>
+							</div>
+							<div th:unless="${isFavorite}">
+								<a href="#"
+									onclick="event.preventDefault(); document.getElementById('favorite-form').submit();">&#9825;
+									お気に入り追加</a>
+								<form method="post"
+									th:action="@{/restaurants/__${restaurant.getId()}__/favorites/create}"
+									id="favorite-form" class="d-none"></form>
+							</div>
+						</div>
+						
+						<!-- 管理者であれば表示する -->
+						<div sec:authorize="hasRole('ROLE‗ADMIN_PAY')">
 							<div th:if="${isFavorite}">
 								<a href="#"
 									onclick="event.preventDefault(); document.getElementById('favorite-form').submit();">&#9829;
