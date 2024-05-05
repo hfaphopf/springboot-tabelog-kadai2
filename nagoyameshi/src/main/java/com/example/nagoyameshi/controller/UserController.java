@@ -111,6 +111,9 @@ public class UserController {
 
 		//現在設定されている会員レベル(Role)の逆を設定：1→2　もしくは、2→1。
 		userService.updatePaid(userDetailsImpl.getUser().getId());
+		
+		redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。");
+        
 
 		return "redirect:/user";
 	}
