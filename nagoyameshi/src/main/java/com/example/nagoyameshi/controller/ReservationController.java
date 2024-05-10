@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.controller;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -92,8 +93,9 @@ public class ReservationController {
 
 		//日付を表示する
 		LocalDate checkinDate = reservationInputForm.getCheckinDate();
+		LocalTime checkinTime = reservationInputForm.getCheckinTime();
 		ReservationRegisterForm reservationRegisterForm = new ReservationRegisterForm(restaurant.getId(), user.getId(),
-				checkinDate.toString(), reservationInputForm.getNumberOfPeople());
+				checkinDate.toString(), checkinTime.toString(),reservationInputForm.getNumberOfPeople());
 
 		model.addAttribute("restaurant", restaurant);
 		model.addAttribute("reservationRegisterForm", reservationRegisterForm);
