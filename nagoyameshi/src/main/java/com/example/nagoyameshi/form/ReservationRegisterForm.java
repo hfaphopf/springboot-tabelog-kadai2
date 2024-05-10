@@ -12,6 +12,8 @@ public class ReservationRegisterForm {
 	public Integer userId;
 
 	public String reservationDate;
+	
+	private String reservationTime;
 
 	public Integer numberOfPeople;
 }
