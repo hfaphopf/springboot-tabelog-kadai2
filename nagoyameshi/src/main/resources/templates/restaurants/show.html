@@ -49,7 +49,7 @@
 									id="favorite-form" class="d-none"></form>
 							</div>
 						</div>
-						
+
 						<!-- 管理者であれば表示する -->
 						<div sec:authorize="hasRole('ROLE_ADMIN')">
 							<div th:if="${isFavorite}">
@@ -69,7 +69,7 @@
 									id="favorite-form" class="d-none"></form>
 							</div>
 						</div>
-						
+
 						<!-- 管理者であれば表示する -->
 						<div sec:authorize="hasRole('ROLE‗ADMIN_PAY')">
 							<div th:if="${isFavorite}">
@@ -233,6 +233,16 @@
 													<input type="date" class="form-control" th:field="*{checkinDate}">
 												</div>
 
+												<div class="form-group mb-2">
+													<label for="fromCheckinTime"
+														class="col-form-label text-md-left fw-bold">時間</label>
+													<div th:if="${#fields.hasErrors('checkinTime')}"
+														class="text-danger small mb-2" th:errors="*{checkinTime}">
+													</div>
+													<input type="text" class="form-control"
+														th:field="*{checkinTime}">
+												</div>
+												
 												<div class="form-group mb-4">
 													<label for="numberOfPeople"
 														class="col-form-label text-md-left fw-bold">人数</label>
