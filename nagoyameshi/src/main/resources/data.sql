@@ -70,22 +70,21 @@ INSERT IGNORE INTO users (id, name, furigana, postal_code, address, phone_number
 INSERT IGNORE INTO users (id, name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES (12, '佐藤 信平', 'サトウ シンペイ', '673-1324', '兵庫県加東市新定X-XX-XX', '090-1234-5678', 'shinpei.samurai@example.com', 'password', 1, false);
 
 -- reservationsテーブル
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (1, 1, 1, 2, '2024-01-01');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (2, 2, 1, 6, '2024-01-05');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (3, 3, 1, 4, '2024-03-16');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (4, 4, 1, 5, '2024-05-15');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (5, 5, 1, 6, '2024-02-01');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (6, 6, 1, 3, '2024-01-01');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (7, 7, 1, 1, '2024-01-02');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (8, 8, 1, 3, '2024-01-12');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (9, 9, 1, 2, '2024-08-25');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (10, 10, 1, 5, '2024-07-15');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (11, 11, 1, 6, '2024-01-01');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (12, 12, 1, 5, '2024-01-02');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (13, 13, 1, 3, '2024-02-12');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (14, 14, 1, 4, '2024-02-09');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (15, 15, 1, 5, '2024-05-08');
-INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date) VALUES (16, 16, 1, 7, '2024-01-15');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (1, 1, 1, 2, '2024-01-01', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (2, 2, 1, 6, '2024-01-05', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (3, 3, 1, 4, '2024-03-16', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (4, 4, 1, 5, '2024-05-15', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (5, 5, 1, 6, '2024-02-01', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (6, 6, 1, 3, '2024-01-01', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (7, 7, 1, 1, '2024-01-02', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (8, 8, 1, 3, '2024-01-12', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (9, 9, 1, 2, '2024-08-25', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (10, 10, 1, 5, '2024-07-15', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (11, 11, 1, 6, '2024-01-01', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (12, 12, 1, 5, '2024-01-02', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (13, 13, 1, 3, '2024-02-12', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (14, 14, 1, 4, '2024-02-09', '12:00');
+INSERT IGNORE INTO reservations (id, restaurant_id, user_id, number_of_people, reservation_date, reservation_time) VALUES (15, 15, 1, 5, '2024-05-08', '12:00');
 
 -- reviewsテーブル
 INSERT IGNORE INTO reviews (id, restaurant_id, user_id, score, content) VALUES (1, 1, 1, 1, 'テスト');
