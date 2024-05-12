@@ -61,7 +61,7 @@ public class FavoriteController {
 	public String delete(@PathVariable(name = "favoriteId") Integer favoriteId, RedirectAttributes redirectAttributes) {
 		favoriteRepository.deleteById(favoriteId);
 
-		redirectAttributes.addFlashAttribute("successMessage", "お気に入りを解除しました。");
+		redirectAttributes.addFlashAttribute("favoriteDeleate", "お気に入りを解除しました。");
 
 		return "redirect:/restaurants/{restaurantId}";
 	}
