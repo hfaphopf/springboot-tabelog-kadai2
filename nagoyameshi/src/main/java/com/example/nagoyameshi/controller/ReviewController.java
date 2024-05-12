@@ -84,7 +84,7 @@ public class ReviewController {
 
 		//投稿成功時、下記メッセージを表示
 		reviewService.create(restaurant, user, reviewRegisterForm);
-		redirectAttributes.addFlashAttribute("successMessage", "レビューを投稿しました。");
+		redirectAttributes.addFlashAttribute("successReview", "レビューを投稿しました。");
 
 		return "redirect:/restaurants/{restaurantId}";
 	}
@@ -126,7 +126,7 @@ public class ReviewController {
 
 		//投稿成功時、下記メッセージを表示
 		reviewService.update(reviewEditForm);
-		redirectAttributes.addFlashAttribute("successMessage", "レビューを編集しました。");
+		redirectAttributes.addFlashAttribute("reviewEdit", "レビューを編集しました。");
 
 		return "redirect:/restaurants/{restaurantId}";
 	}
@@ -136,7 +136,7 @@ public class ReviewController {
 	public String delete(@PathVariable(name = "reviewId") Integer reviewId, RedirectAttributes redirectAttributes) {
 		reviewRepository.deleteById(reviewId);
 
-		redirectAttributes.addFlashAttribute("successMessage", "レビューを削除しました。");
+		redirectAttributes.addFlashAttribute("reviewDeleate", "レビューを削除しました。");
 
 		return "redirect:/restaurants/{restaurantId}";
 	}
