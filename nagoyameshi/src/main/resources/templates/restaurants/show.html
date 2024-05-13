@@ -245,7 +245,9 @@
 										</div>
 									</div>
 
-									<div sec:authorize="isAuthenticated()" class="col-lg-4 px-0 ps-lg-4 mb-4">
+									<!-- 予約セクション -->
+									<!-- 有料会員であれば表示する -->
+									<div sec:authorize="hasRole('ROLE_PAY')" class="col-lg-4 px-0 ps-lg-4 mb-4">
 										<div class="card-body">
 											<form method="get"
 												th:action="@{/restaurants/__${restaurant.getId()}__/reservations/input}"
