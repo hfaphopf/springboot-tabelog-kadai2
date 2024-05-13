@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,10 +34,12 @@ public class ReservationService {
 		Restaurant restaurant = restaurantRepository.getReferenceById(reservationRegisterForm.getRestaurantId());
 		User user = userRepository.getReferenceById(reservationRegisterForm.getUserId());
 		LocalDate reservationDate = LocalDate.parse(reservationRegisterForm.getReservationDate());
+		LocalTime reservationTime = LocalTime.parse(reservationRegisterForm.getReservationTime());
 
 		reservation.setRestaurant(restaurant);
 		reservation.setUser(user);
 		reservation.setReservationDate(reservationDate);
+		reservation.setReservationTime(reservationTime);
 		reservation.setNumberOfPeople(reservationRegisterForm.getNumberOfPeople());
 
 		reservationRepository.save(reservation);
