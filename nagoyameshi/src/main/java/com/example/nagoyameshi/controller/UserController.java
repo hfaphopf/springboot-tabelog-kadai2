@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.controller;
 
+import java.util.UUID;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -98,26 +100,57 @@ public class UserController {
 		return "user/changefree";
 	}
 
-	//会員ステータス変更
+	//無料→有料会員ステータス変更
 	@PostMapping("/editpaid")
 	public String editPaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-			@ModelAttribute @Validated UserEditPaidForm userEditPaidForm, BindingResult bindingResult, Model model,
+			@ModelAttribute @Validated UserEditPaidForm userEditPaidForm,
+			BindingResult bindingResult,
+			Model model,
 			RedirectAttributes redirectAttributes) {
-		System.out.println("editpaid######" + userDetailsImpl.getUser().getId());
-		System.out.println("bindingResult.hasErrors():" + bindingResult);
+
 		if (bindingResult.hasErrors()) {
 			return "user/changepaid";
 		}
 
-		//現在設定されている会員レベル(Role)の逆を設定：1→2　もしくは、2→1。
-		userService.updatePaid(userDetailsImpl.getUser().getId());
+		// uuidをランダム生成
+		UUID uuid = UUID.randomUUID();
 		
-		redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
-        
+		// 会員ステータスを更新
+		userService.updatePaid(userDetailsImpl.getUser().getId());
 
-		return "redirect:/user";
+		// 成功メッセージをフラッシュ属性に設定
+		redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。決済画面に進んでください。");
+
+		// 決済ページへのURLを取得
+		String subscriptionUrl = "https://buy.stripe.com/test_5kA5l1ezX9eX8P68ww"
+				+ userDetailsImpl.getUser().getId();
+
+		// 決済ページURLにリダイレクト
+		return "redirect:" + subscriptionUrl;
 	}
 
+	//有料→無料会員ステータス変更
+		@PostMapping("/editfree")
+		public String editFree(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+				@ModelAttribute @Validated UserEditPaidForm userEditPaidForm,
+				BindingResult bindingResult,
+				Model model,
+				RedirectAttributes redirectAttributes) {
+
+			if (bindingResult.hasErrors()) {
+				return "user/changepaid";
+			}
+
+			// 会員ステータスを更新
+			userService.updatePaid(userDetailsImpl.getUser().getId());
+
+			// 成功メッセージをフラッシュ属性に設定
+			redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
+			
+			// 決済ページURLにリダイレクト
+			return "redirect:/user";
+		}
+			
 	@GetMapping("/company")
 	public String company() {
 		return "auth/company";
