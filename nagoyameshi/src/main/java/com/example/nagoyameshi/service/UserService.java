@@ -107,6 +107,12 @@ public class UserService {
 
 		userRepository.save(user);
 	}
+	
+	//決済サービスと連携
+	public String startSubscription(Long userId) {
+	    // 決済処理を行い、決済ページのURLを取得
+	    return "https://buy.stripe.com/test_5kA5l1ezX9eX8P68ww";
+	}
 
 //	public static userAuth() {
 //		return userRepository.save(user);
