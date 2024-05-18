@@ -1,7 +1,5 @@
 package com.example.nagoyameshi.controller;
 
-import java.util.UUID;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,17 +17,22 @@ import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.form.UserEditPaidForm;
 import com.example.nagoyameshi.repository.UserRepository;
 import com.example.nagoyameshi.security.UserDetailsImpl;
+import com.example.nagoyameshi.service.StripeService;
 import com.example.nagoyameshi.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 	private final UserRepository userRepository;
 	private final UserService userService;
+	private final StripeService stripeService;
 
-	public UserController(UserRepository userRepository, UserService userService) {
+	public UserController(UserRepository userRepository, UserService userService, StripeService stripeService) {
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.stripeService = stripeService;
 	}
 
 	@GetMapping
@@ -74,14 +77,14 @@ public class UserController {
 	//無料→有料会員変更画面に遷移
 	@GetMapping("/changepaid")
 	//ログイン中のユーザー情報をメソッドの引数で受け取る
-	public String changepaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+	public String changepaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, HttpServletRequest httpServletRequest, Model model) {
 		//最新のユーザー情報を取得
 		//User user = userRepository.findUserById(userDetailsImpl.getUser().getId());
 		UserEditPaidForm up = new UserEditPaidForm(userDetailsImpl.getUser().getId());
-
+		String sessionId = stripeService.createStripeSession(userDetailsImpl.getUser().getId().toString(), httpServletRequest );
 		//		model.addAttribute("user", user);
 		model.addAttribute("userEditPaidForm", up);
-
+		model.addAttribute("sessionId", sessionId);
 		return "user/changepaid";
 
 	}
@@ -102,32 +105,30 @@ public class UserController {
 
 	//無料→有料会員ステータス変更
 	@PostMapping("/editpaid")
-	public String editPaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-			@ModelAttribute @Validated UserEditPaidForm userEditPaidForm,
-			BindingResult bindingResult,
-			Model model,
-			RedirectAttributes redirectAttributes) {
+    public String editPaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            @ModelAttribute @Validated UserEditPaidForm userEditPaidForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
 
-		if (bindingResult.hasErrors()) {
-			return "user/changepaid";
-		}
+        if (bindingResult.hasErrors()) {
+            return "user/changepaid";
+        }
 
-		// uuidをランダム生成
-		UUID uuid = UUID.randomUUID();
-		
-		// 会員ステータスを更新
-		userService.updatePaid(userDetailsImpl.getUser().getId());
+        // 参照IDを生成
+        String referenceId = userService.generateReferenceId();
+        
+        // ユーザ情報を更新
+        userService.updatePaid(userDetailsImpl.getUser().getId());
 
-		// 成功メッセージをフラッシュ属性に設定
-		redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。決済画面に進んでください。");
+        // 成功メッセージをフラッシュ属性に設定
+        redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。決済画面に進んでください。");
 
-		// 決済ページへのURLを取得
-		String subscriptionUrl = "https://buy.stripe.com/test_5kA5l1ezX9eX8P68ww"
-				+ userDetailsImpl.getUser().getId();
+        // 決済ページへのURLを生成
+        String subscriptionUrl = "https://example.com/subscription?referenceId=" + referenceId;
 
-		// 決済ページURLにリダイレクト
-		return "redirect:" + subscriptionUrl;
-	}
+        // 決済ページURLにリダイレクト
+        return "redirect:" + subscriptionUrl;
+    }
 
 	//有料→無料会員ステータス変更
 		@PostMapping("/editfree")
