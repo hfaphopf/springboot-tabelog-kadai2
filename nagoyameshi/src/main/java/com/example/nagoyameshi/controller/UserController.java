@@ -120,14 +120,11 @@ public class UserController {
         // ユーザ情報を更新
         userService.updatePaid(userDetailsImpl.getUser().getId());
 
-        // 成功メッセージをフラッシュ属性に設定
-        redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。決済画面に進んでください。");
+     // 成功メッセージをフラッシュ属性に設定
+        redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
 
-        // 決済ページへのURLを生成
-        String subscriptionUrl = "https://example.com/subscription?referenceId=" + referenceId;
-
-        // 決済ページURLにリダイレクト
-        return "redirect:" + subscriptionUrl;
+        // ログイン後のページにリダイレクト
+        return "redirect:/auth/login";
     }
 
 	//有料→無料会員ステータス変更
