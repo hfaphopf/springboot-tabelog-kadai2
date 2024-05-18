@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.service;
 
+import java.util.UUID;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,18 +88,17 @@ public class UserService {
 		User changepaiduser = userRepository.findUserById(id);
 		System.out.println("changepaiduser:" + changepaiduser);
 
-		//現在設定されている会員レベルの逆を設定：無料会員→有料会員　もしくは、その逆。
-		Role r = changepaiduser.getRole();
-		String role = r.getName();
+	        // 現在設定されている会員レベルの逆を設定：無料会員→有料会員　もしくは、その逆。
+	        Role r = changepaiduser.getRole();
+	        int newRoleId = (r.getId() == 1) ? 3 : 1;
+	        changepaiduser.setRole(roleRepository.findById(newRoleId));
 
-		int newRole = 1;
-		if (r.getId() == 1) {
-			newRole = 3;
-		}
-		changepaiduser.setRole(roleRepository.findById(newRole));
+	        // uuidをランダム生成
+	        UUID uuid = UUID.randomUUID();
+	        changepaiduser.setReferenceId(uuid.toString());
 
-		userRepository.save(changepaiduser);
-	}
+	        userRepository.save(changepaiduser);
+	    }
 
 	@Transactional
 	public void updatePassword(ResetPasswordForm resetPasswordForm) {
@@ -112,6 +113,11 @@ public class UserService {
 	public String startSubscription(Long userId) {
 	    // 決済処理を行い、決済ページのURLを取得
 	    return "https://buy.stripe.com/test_5kA5l1ezX9eX8P68ww";
+	}
+
+	public String generateReferenceId() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 //	public static userAuth() {
