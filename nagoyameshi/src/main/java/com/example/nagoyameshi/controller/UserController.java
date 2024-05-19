@@ -74,20 +74,36 @@ public class UserController {
 		return "redirect:/user";
 	}
 
-	//無料→有料会員変更画面に遷移
-	@GetMapping("/changepaid")
-	//ログイン中のユーザー情報をメソッドの引数で受け取る
-	public String changepaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, HttpServletRequest httpServletRequest, Model model) {
-		//最新のユーザー情報を取得
-		//User user = userRepository.findUserById(userDetailsImpl.getUser().getId());
-		UserEditPaidForm up = new UserEditPaidForm(userDetailsImpl.getUser().getId());
-		String sessionId = stripeService.createStripeSession(userDetailsImpl.getUser().getId().toString(), httpServletRequest );
-		//		model.addAttribute("user", user);
-		model.addAttribute("userEditPaidForm", up);
-		model.addAttribute("sessionId", sessionId);
-		return "user/changepaid";
+	// 無料→有料会員変更画面に遷移
+    @GetMapping("/changepaid")
+    public String changepaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, HttpServletRequest httpServletRequest, Model model) {
+        UserEditPaidForm up = new UserEditPaidForm(userDetailsImpl.getUser().getId());
+        String sessionId = stripeService.createStripeSession(userDetailsImpl.getUser().getId().toString(), httpServletRequest);
+        model.addAttribute("userEditPaidForm", up);
+        model.addAttribute("sessionId", sessionId);
+        return "user/changepaid";
+    }
 
-	}
+    // 支払い成功後のリダイレクト先
+    @GetMapping("/changepaid/success")
+    public String changePaidSuccess(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, RedirectAttributes redirectAttributes) {
+    	
+    	// ユーザ情報を更新
+        userService.updatePaid(userDetailsImpl.getUser().getId());
+        
+     // 成功メッセージ
+        redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
+        
+     // ログイン後のページにリダイレクト
+        return "redirect:/auth/login";
+    }
+
+    // 支払いキャンセル後のリダイレクト先
+    @GetMapping("/changepaid/cancel")
+    public String changePaidCancel(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", "支払いがキャンセルされました。");
+        return "redirect:/user/changepaid";
+    }
 
 	//有料→無料変更画面に遷移
 	@GetMapping("/changefree")
@@ -103,29 +119,6 @@ public class UserController {
 		return "user/changefree";
 	}
 
-	//無料→有料会員ステータス変更
-	@PostMapping("/editpaid")
-    public String editPaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-            @ModelAttribute @Validated UserEditPaidForm userEditPaidForm,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            return "user/changepaid";
-        }
-
-        // 参照IDを生成
-        String referenceId = userService.generateReferenceId();
-        
-        // ユーザ情報を更新
-        userService.updatePaid(userDetailsImpl.getUser().getId());
-
-     // 成功メッセージをフラッシュ属性に設定
-        redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
-
-        // ログイン後のページにリダイレクト
-        return "redirect:/auth/login";
-    }
 
 	//有料→無料会員ステータス変更
 		@PostMapping("/editfree")
