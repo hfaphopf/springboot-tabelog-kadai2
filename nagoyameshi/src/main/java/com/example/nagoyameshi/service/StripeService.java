@@ -50,9 +50,9 @@ public class StripeService {
                         .build())
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 // 成功時のURLを動的に構築する
-                .setSuccessUrl(baseUrl + "/login?reserved")
+                .setSuccessUrl(baseUrl + "/user/changepaid/success")
                 // キャンセル時のURLを動的に構築する
-                .setCancelUrl(baseUrl)
+                .setCancelUrl(baseUrl  + "/user/changepaid/cancel")
                 .setPaymentIntentData(
                     SessionCreateParams.PaymentIntentData.builder()
                         .putMetadata("userId",userId)
