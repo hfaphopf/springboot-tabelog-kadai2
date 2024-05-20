@@ -25,56 +25,50 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	private final UserRepository userRepository;
-	private final UserService userService;
-	private final StripeService stripeService;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final StripeService stripeService;
 
-	public UserController(UserRepository userRepository, UserService userService, StripeService stripeService) {
-		this.userRepository = userRepository;
-		this.userService = userService;
-		this.stripeService = stripeService;
-	}
+    public UserController(UserRepository userRepository, UserService userService, StripeService stripeService) {
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.stripeService = stripeService;
+    }
 
-	@GetMapping
-	public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
-		User user = userRepository.findUserById(userDetailsImpl.getUser().getId());
+    @GetMapping
+    public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+        User user = userRepository.findUserById(userDetailsImpl.getUser().getId());
+        model.addAttribute("user", user);
+        return "user/index";
+    }
 
-		model.addAttribute("user", user);
+    @GetMapping("/edit")
+    public String edit(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+        User user = userRepository.getReferenceById(userDetailsImpl.getUser().getId());
+        UserEditForm userEditForm = new UserEditForm(user.getId(), user.getName(), user.getFurigana(),
+            user.getPostalCode(), user.getAddress(), user.getPhoneNumber(), user.getEmail());
+        model.addAttribute("userEditForm", userEditForm);
+        return "user/edit";
+    }
 
-		return "user/index";
-	}
+    @PostMapping("/update")
+    public String update(@ModelAttribute @Validated UserEditForm userEditForm, BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+        if (userService.isEmailChanged(userEditForm) && userService.isEmailRegistered(userEditForm.getEmail())) {
+            FieldError fieldError = new FieldError(bindingResult.getObjectName(), "email", "すでに登録済みのメールアドレスです。");
+            bindingResult.addError(fieldError);
+        }
 
-	@GetMapping("/edit")
-	public String edit(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
-		User user = userRepository.getReferenceById(userDetailsImpl.getUser().getId());
-		UserEditForm userEditForm = new UserEditForm(user.getId(), user.getName(), user.getFurigana(),
-				user.getPostalCode(), user.getAddress(), user.getPhoneNumber(), user.getEmail());
+        if (bindingResult.hasErrors()) {
+            return "user/edit";
+        }
 
-		model.addAttribute("userEditForm", userEditForm);
+        userService.update(userEditForm);
+        redirectAttributes.addFlashAttribute("successMessage", "会員情報を編集しました。");
+        return "redirect:/user";
+    }
 
-		return "user/edit";
-	}
-
-	@PostMapping("/update")
-	public String update(@ModelAttribute @Validated UserEditForm userEditForm, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes) {
-		// メールアドレスが変更されており、かつ登録済みであれば、BindingResultオブジェクトにエラー内容を追加する
-		if (userService.isEmailChanged(userEditForm) && userService.isEmailRegistered(userEditForm.getEmail())) {
-			FieldError fieldError = new FieldError(bindingResult.getObjectName(), "email", "すでに登録済みのメールアドレスです。");
-			bindingResult.addError(fieldError);
-		}
-
-		if (bindingResult.hasErrors()) {
-			return "user/edit";
-		}
-
-		userService.update(userEditForm);
-		redirectAttributes.addFlashAttribute("successMessage", "会員情報を編集しました。");
-
-		return "redirect:/user";
-	}
-
-	// 無料→有料会員変更画面に遷移
+    // 無料→有料会員変更画面に遷移
     @GetMapping("/changepaid")
     public String changepaid(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, HttpServletRequest httpServletRequest, Model model) {
         UserEditPaidForm up = new UserEditPaidForm(userDetailsImpl.getUser().getId());
@@ -87,15 +81,9 @@ public class UserController {
     // 支払い成功後のリダイレクト先
     @GetMapping("/changepaid/success")
     public String changePaidSuccess(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, RedirectAttributes redirectAttributes) {
-    	
-    	// ユーザ情報を更新
         userService.updatePaid(userDetailsImpl.getUser().getId());
-        
-     // 成功メッセージ
         redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
-        
-     // ログイン後のページにリダイレクト
-        return "redirect:/auth/login";
+        return "redirect:/login";
     }
 
     // 支払いキャンセル後のリダイレクト先
@@ -105,50 +93,36 @@ public class UserController {
         return "redirect:/user/changepaid";
     }
 
-	//有料→無料変更画面に遷移
-	@GetMapping("/changefree")
-	//ログイン中のユーザー情報をメソッドの引数で受け取る
-	public String changefree(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
-		//最新のユーザー情報を取得
-		//User user = userRepository.findUserById(userDetailsImpl.getUser().getId());
-		UserEditPaidForm up = new UserEditPaidForm(userDetailsImpl.getUser().getId());
+    // 有料→無料変更画面に遷移
+    @GetMapping("/changefree")
+    public String changefree(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+        UserEditPaidForm up = new UserEditPaidForm(userDetailsImpl.getUser().getId());
+        model.addAttribute("userEditPaidForm", up);
+        return "user/changefree";
+    }
 
-		//			model.addAttribute("user", user);
-		model.addAttribute("userEditPaidForm", up);
+    // 有料→無料会員ステータス変更
+    @PostMapping("/editfree")
+    public String editFree(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+                           @ModelAttribute @Validated UserEditPaidForm userEditPaidForm,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "user/changefree";
+        }
 
-		return "user/changefree";
-	}
+        userService.updatePaid(userDetailsImpl.getUser().getId());
+        redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
+        return "redirect:/user";
+    }
 
+    @GetMapping("/company")
+    public String company() {
+        return "auth/company";
+    }
 
-	//有料→無料会員ステータス変更
-		@PostMapping("/editfree")
-		public String editFree(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-				@ModelAttribute @Validated UserEditPaidForm userEditPaidForm,
-				BindingResult bindingResult,
-				Model model,
-				RedirectAttributes redirectAttributes) {
-
-			if (bindingResult.hasErrors()) {
-				return "user/changepaid";
-			}
-
-			// 会員ステータスを更新
-			userService.updatePaid(userDetailsImpl.getUser().getId());
-
-			// 成功メッセージをフラッシュ属性に設定
-			redirectAttributes.addFlashAttribute("successMessage", "会員ステータスを変更しました。最新の会員情報を確認するには、再ログインをお願いします。");
-			
-			// 決済ページURLにリダイレクト
-			return "redirect:/user";
-		}
-			
-	@GetMapping("/company")
-	public String company() {
-		return "auth/company";
-	}
-
-	@GetMapping("/subscription")
-	public String subscription() {
-		return "user/subscription";
-	}
+    @GetMapping("/subscription")
+    public String subscription() {
+        return "user/subscription";
+    }
 }
