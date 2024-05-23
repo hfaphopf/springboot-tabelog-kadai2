@@ -9,10 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.nagoyameshi.entity.Reservation;
 import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.entity.User;
+import com.example.nagoyameshi.form.ReservationInputForm;
 import com.example.nagoyameshi.form.ReservationRegisterForm;
 import com.example.nagoyameshi.repository.ReservationRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
 import com.example.nagoyameshi.repository.UserRepository;
+
+import jakarta.validation.Valid;
 
 @Service
 public class ReservationService {
@@ -48,5 +51,9 @@ public class ReservationService {
 	// 宿泊人数が定員以下かどうかをチェックする
 	public boolean isWithinSeats(Integer numberOfPeople, Integer seats) {
 		return numberOfPeople <= seats;
+	}
+
+	public void save(@Valid ReservationInputForm form) {
+		
 	}
 }
