@@ -200,7 +200,9 @@
 										</div>
 
 										<div class="col">
-											<span th:text="${restaurant.getBusinessHours()}"></span>
+											<span id="businessHours" th:data-opening="${restaurant.getOpeningTime()}"
+												th:data-closing="${restaurant.getClosingTime()}"
+												th:text="${restaurant.getBusinessHours()}"></span>
 										</div>
 									</div>
 
@@ -256,8 +258,7 @@
 													<label for="checkinDate"
 														class="col-form-label text-md-left fw-bold">日付</label>
 													<div th:if="${#fields.hasErrors('checkinDate')}"
-														class="text-danger small mb-2" th:errors="*{checkinDate}">
-													</div>
+														class="text-danger small mb-2" th:errors="*{checkinDate}"></div>
 													<input type="date" class="form-control" th:field="*{checkinDate}">
 												</div>
 
@@ -265,9 +266,9 @@
 													<label for="fromCheckinTime"
 														class="col-form-label text-md-left fw-bold">時間</label>
 													<div th:if="${#fields.hasErrors('checkinTime')}"
-														class="text-danger small mb-2" th:errors="*{checkinTime}">
-													</div>
-													<input type="text" class="form-control" th:field="*{checkinTime}">
+														class="text-danger small mb-2" th:errors="*{checkinTime}"></div>
+													<input type="time" class="form-control" th:field="*{checkinTime}"
+														id="checkinTime">
 												</div>
 
 												<div class="form-group mb-4">
@@ -282,11 +283,29 @@
 
 												<div class="form-group">
 													<button type="submit"
-														class="btn text-white shadow-sm w-100 nagoyameshi-btn">予約する</button>
+														class="btn text-white shadow-sm w-100 nagoyameshi-btn"
+														id="reserveButton">予約する</button>
 												</div>
 											</form>
 										</div>
 									</div>
+
+									<script>
+										document.getElementById('reserveButton').addEventListener('click', function (event) {
+											var checkinTime = document.getElementById('checkinTime').value;
+											var businessHoursElement = document.getElementById('businessHours');
+
+											// 各店舗の営業時間を取得
+											var openingTime = businessHoursElement.getAttribute('data-opening');
+											var closingTime = businessHoursElement.getAttribute('data-closing');
+
+											if (checkinTime < openingTime || checkinTime > closingTime) {
+												event.preventDefault();
+												alert('予約時間は営業時間内で指定してください。');
+											}
+										});
+									</script>
+
 								</div>
 							</div>
 						</div>
