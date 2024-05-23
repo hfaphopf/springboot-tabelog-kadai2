@@ -27,18 +27,23 @@ import com.example.nagoyameshi.repository.ReservationRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
 import com.example.nagoyameshi.security.UserDetailsImpl;
 import com.example.nagoyameshi.service.ReservationService;
+import com.example.nagoyameshi.service.RestaurantService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class ReservationController {
 	private final ReservationRepository reservationRepository;
 	private final RestaurantRepository restaurantRepository;
 	private final ReservationService reservationService;
+	private final RestaurantService restaurantService;
 
 	public ReservationController(ReservationRepository reservationRepository, RestaurantRepository restaurantRepository,
-			ReservationService reservationService) {
+			ReservationService reservationService, RestaurantService restaurantService) {
 		this.reservationRepository = reservationRepository;
 		this.restaurantRepository = restaurantRepository;
 		this.reservationService = reservationService;
+		this.restaurantService = restaurantService;
 	}
 
 	@GetMapping("/reservations")
@@ -104,10 +109,38 @@ public class ReservationController {
 	}
 
 	// フォームの送信先を担当するメソッド
-	@PostMapping("/restaurants/{id}/reservations/create")
-	public String create(@ModelAttribute ReservationRegisterForm reservationRegisterForm) {
-		reservationService.create(reservationRegisterForm);
+	@PostMapping("/restaurants/{restaurantId}/reservations/create")
+	public String createReservation(@PathVariable Long restaurantId, @Valid @ModelAttribute ReservationInputForm form, 
+                                    BindingResult result, RedirectAttributes redirectAttributes) throws ResourceNotFoundExceptionController {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "入力にエラーがあります。");
+            return "redirect:/restaurants/" + restaurantId + "/reservations/input";
+        }
 
-		return "redirect:/reservations?reserved";
-	}
-}
+     // 店舗情報を取得
+        Restaurant restaurant = restaurantService.findById(restaurantId);
+        if (restaurant == null) {
+            throw new ResourceNotFoundExceptionController("Restaurant not found");
+        }
+
+        // 営業時間を取得
+        LocalTime openingTime = restaurant.getOpeningTime();
+        LocalTime closingTime = restaurant.getClosingTime();
+
+        // チェックイン時間
+        LocalTime checkinTime = form.getCheckinTime();
+
+        // 営業時間内チェック
+        if (checkinTime.isBefore(openingTime) || checkinTime.isAfter(closingTime)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "予約時間は営業時間内で指定してください。");
+            return "redirect:/restaurants/" + restaurantId + "/reservations/input";
+        }
+
+        // Reservationの保存または他の処理
+        reservationService.save(form);
+
+        redirectAttributes.addFlashAttribute("successMessage", "予約が完了しました。");
+        return "redirect:/reservations?reserved";
+    }
+        }
+
