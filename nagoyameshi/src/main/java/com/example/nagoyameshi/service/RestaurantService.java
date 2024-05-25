@@ -96,8 +96,4 @@ public class RestaurantService {
 		}
 	}
 
-	public Restaurant findById(Long restaurantId) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
 }
